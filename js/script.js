@@ -9,11 +9,21 @@ const exportBtn = document.querySelector("#export-notes");
 function showNotes() {
   cleanNotes();
 
-  getNotes().forEach((note) => {
-    const noteElement = createNote(note.id, note.content, note.fixed);
+  const notes = getNotes();
 
+  notes.forEach((note) => {
+    const noteElement = createNote(note.id, note.content, note.fixed);
     notesContainer.appendChild(noteElement);
   });
+
+  // Tornar a lista ordenável usando jQuery UI Sortable
+  $("#notes-container").sortable({
+    update: function (event, ui) {
+      // Quando a ordem é alterada, salve a nova ordem no local storage
+      saveNotes(getNotes());
+    },
+  });
+  $("#notes-container").disableSelection();
 }
 
 function cleanNotes() {
